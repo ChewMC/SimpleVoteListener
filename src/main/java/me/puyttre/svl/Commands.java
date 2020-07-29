@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Commands implements CommandExecutor {
     
-    private SimpleVoteListener plugin;
+    private final SimpleVoteListener plugin;
     
     public Commands(SimpleVoteListener plugin) {
         this.plugin = plugin;
@@ -21,7 +21,7 @@ public class Commands implements CommandExecutor {
         if (cmd.getName().toLowerCase().equals("svl")) {
             if (args.length > 0) {
                 if (args[0].equals("reload")) {
-                    plugin.config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "SimpleVoteListener.yml"));
+                    plugin.config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml"));
                     sender.sendMessage(ChatColor.GREEN + "[SVL] Config reloaded.");
                 } else {
                     sender.sendMessage(ChatColor.RED + "Unknown command.");

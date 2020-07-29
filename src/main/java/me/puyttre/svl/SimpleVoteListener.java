@@ -28,8 +28,8 @@ public class SimpleVoteListener extends JavaPlugin implements Listener {
         
         getCommand("svl").setExecutor(new Commands(this));
         
-        if (!new File(getDataFolder(), "SimpleVoteListener.yml").exists()) {
-            saveResource("SimpleVoteListener.yml", false);
+        if (!new File(getDataFolder(), "config.yml").exists()) {
+            saveResource("config.yml", false);
             loadConfig();
             messager.log("Config file not found. Generating a new one for you!");
         } else {
@@ -42,14 +42,14 @@ public class SimpleVoteListener extends JavaPlugin implements Listener {
     
     @Override
     public void onDisable() {
-        messager.log("All Offline Players removed from list (Cause: plugin disabled)");
-        messager.log("Stopping all timed commands...");
+        getLogger().info("All Offline Players removed from list (Cause: plugin disabled)");
+        getLogger().info("Stopping all timed commands...");
         timer.stopAll();
-        messager.log("SimpleVoteListener 2.4 successfully disabled.");
+        getLogger().info("SimpleVoteListener 3.0 successfully disabled.");
     }
     
     public void loadConfig() {
-        this.config = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "SimpleVoteListener.yml"));
+        this.config = this.getConfig();
     }
 
     @EventHandler

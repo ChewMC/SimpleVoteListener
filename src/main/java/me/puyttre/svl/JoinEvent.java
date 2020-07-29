@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinEvent implements Listener {
     
-    private SimpleVoteListener plugin;
+    private final SimpleVoteListener plugin;
     
     public JoinEvent(SimpleVoteListener plugin) {
         this.plugin = plugin;
