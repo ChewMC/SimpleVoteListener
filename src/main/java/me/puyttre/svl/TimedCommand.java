@@ -7,9 +7,9 @@ import org.bukkit.Bukkit;
 
 public class TimedCommand {
     
-    private SimpleVoteListener plugin;
+    private final SimpleVoteListener plugin;
     
-    public Set<String> commands = new HashSet();
+    public Set<String> commands = new HashSet<>();
     
     public TimedCommand(SimpleVoteListener plugin) {
         this.plugin = plugin;
@@ -17,7 +17,7 @@ public class TimedCommand {
     
     public void startTimer(final Vote v, String s) {
         if (!s.contains(";")) {
-            plugin.messager.error("You did not specify a time for the commands to dispatch. eg. 'tell %name% Its been 10 seconds since you voted!;10s'");
+            plugin.getLogger().warning("You did not specify a time for the commands to dispatch. eg. 'tell %name% It's been 10 seconds since you voted!;10s'");
             return;
         }
         final String[] split = s.split(";");
@@ -29,12 +29,9 @@ public class TimedCommand {
         } else if (split[1].toLowerCase().endsWith("h")) {
             time = ((time * 20) * 60) * 60;
         }
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), plugin.replaceColor(plugin.replace(split[0], v)));
-                commands.remove(split[0]);
-            }
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            Bukkit.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), plugin.replaceColor(plugin.replace(split[0], v)));
+            commands.remove(split[0]);
         }, time);
         commands.add(split[0]);
     }

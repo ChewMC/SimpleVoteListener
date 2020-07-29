@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,14 +15,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class SimpleVoteListener extends JavaPlugin implements Listener {
     
     public FileConfiguration config;
-    public Messager messager;
     private TimedCommand timer;
     
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new JoinEvent(this), this);
-        this.messager = new Messager(this);
         this.timer = new TimedCommand(this);
         
         getCommand("svl").setExecutor(new Commands(this));
@@ -31,13 +28,13 @@ public class SimpleVoteListener extends JavaPlugin implements Listener {
         if (!new File(getDataFolder(), "config.yml").exists()) {
             saveResource("config.yml", false);
             loadConfig();
-            messager.log("Config file not found. Generating a new one for you!");
+            getLogger().info("Config file not found. Generating a new one for you!");
         } else {
             loadConfig();
-            messager.log("Config file found. Using it!");
+            getLogger().info("Config file found. Using it!");
         }
-        
-        messager.log("SimpleVoteListener 2.4 successfully enabled.");
+
+        getLogger().info("SimpleVoteListener 2.4 successfully enabled.");
     }
     
     @Override
@@ -61,7 +58,7 @@ public class SimpleVoteListener extends JavaPlugin implements Listener {
         }
     }
     
-    public Set<String> offline = new HashSet();
+    public Set<String> offline = new HashSet<>();
     
     public void initOfflineVote(Vote v) {
         offline.add(v.getUsername().toLowerCase());
